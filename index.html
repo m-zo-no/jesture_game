@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <meta name="theme-color" content="#fff7c7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="default"
+  >
+
+  <title>ポーズでクリア</title>
+
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- 同じ配信元からJavaScriptとモデル関連ファイルを読み込みます。 -->
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"
+  ></script>
+
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"
+  ></script>
+
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"
+  ></script>
+
+  <script defer src="./app.js"></script>
+</head>
+
+<body>
+  <main id="app">
+    <!-- タイトル -->
+    <section
+      id="titleScreen"
+      class="screen title-screen"
+      aria-labelledby="gameTitle"
+    >
+      <div class="title-decoration" aria-hidden="true">
+        ✨ 🙌 ✨
+      </div>
+
+      <h1 id="gameTitle">ポーズでクリア</h1>
+
+      <p class="title-description">
+        カメラのまえで ポーズをしてね
+      </p>
+
+      <button id="startButton" class="button start-button">
+        スタート！
+      </button>
+
+      <p class="small-note">
+        はじめは かおと りょうかたを うつして<br>
+        すこし とまってね
+      </p>
+
+      <p id="errorMessage" class="error-message" role="alert"></p>
+
+      <p class="keyboard-note">
+        Dキーでもスタートできます
+      </p>
+    </section>
+
+    <!-- 準備 -->
+    <section
+      id="loadingScreen"
+      class="screen loading-screen"
+      hidden
+      aria-live="polite"
+    >
+      <div class="spinner" aria-hidden="true"></div>
+
+      <h2>カメラをじゅんびしています</h2>
+
+      <p id="loadingMessage">
+        カメラの使用を許可してください
+      </p>
+    </section>
+
+    <!-- プレイ -->
+    <section id="gameScreen" class="screen game-screen" hidden>
+      <div class="instruction-panel">
+        <div class="game-header">
+          <span id="scoreText">できた！ 0 / 3</span>
+
+          <button
+            id="endButton"
+            class="small-button"
+            aria-label="ゲームを終了してスタート画面へ戻る"
+          >
+            おわる
+          </button>
+        </div>
+
+        <div id="questionCard" class="question-card"></div>
+
+        <div id="hintArea" class="hint-area"></div>
+
+        <div
+          id="correctArea"
+          class="correct-area"
+          hidden
+          aria-live="polite"
+        >
+          <div class="correct-circle">
+            <ruby>正解<rt>せいかい</rt></ruby>
+          </div>
+
+          <p>できたね！</p>
+        </div>
+
+        <div id="holdArea" class="hold-area">
+          <p id="statusText" class="status-text">
+            はじめの いちで ストップ
+          </p>
+
+          <div
+            id="progressBar"
+            class="progress-track"
+            role="progressbar"
+            aria-label="ポーズをキープした時間"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <div class="panel-footer">
+          <button id="skipButton" class="small-button skip-button">
+            つぎのおだい
+          </button>
+
+          <span>Dキーでもスキップ</span>
+        </div>
+      </div>
+
+      <div class="camera-wrap">
+        <canvas
+          id="cameraCanvas"
+          aria-label="左右反転したカメラ映像"
+        ></canvas>
+
+        <div class="camera-label">カメラ</div>
+      </div>
+    </section>
+
+    <!-- 完了 -->
+    <section
+      id="finishScreen"
+      class="screen finish-screen"
+      hidden
+      aria-labelledby="finishTitle"
+    >
+      <div class="finish-hands" aria-hidden="true">🙌</div>
+
+      <h2 id="finishTitle">よくできました！</h2>
+
+      <button id="reportButton" class="button report-button">
+        ぼたんをおして　せんせいにほうこく
+      </button>
+
+      <p id="finishCount" class="small-note">
+        3もん できたら クリア！
+      </p>
+
+      <p class="keyboard-note">
+        ボタン / Dキーでスタートがめんへ
+      </p>
+    </section>
+  </main>
+
+  <!--
+    iPad向けにplaysinlineを指定。
+    カメラ表示はcanvasで行い、このvideoは入力として使用します。
+  -->
+  <video
+    id="inputVideo"
+    class="input-video"
+    autoplay
+    muted
+    playsinline
+    aria-hidden="true"
+  ></video>
+</body>
+</html>

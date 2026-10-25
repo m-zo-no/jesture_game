@@ -1,0 +1,511 @@
+:root {
+  --yellow: #fff7c7;
+  --light-yellow: #fffce7;
+  --card-yellow: #fffad7;
+
+  --ink: #4e4230;
+  --sub-ink: #7d6d4f;
+  --green: #26974e;
+
+  --finish-background: #f7f1e2;
+  --finish-ink: #41362e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  background: var(--yellow);
+}
+
+body {
+  margin: 0;
+  padding:
+    max(12px, env(safe-area-inset-top))
+    max(12px, env(safe-area-inset-right))
+    max(12px, env(safe-area-inset-bottom))
+    max(12px, env(safe-area-inset-left));
+
+  color: var(--ink);
+  font-family:
+    "Hiragino Maru Gothic ProN",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
+
+  -webkit-text-size-adjust: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+button:focus-visible {
+  outline: 4px solid #3884d0;
+  outline-offset: 5px;
+}
+
+#app {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.screen {
+  min-height: 600px;
+  min-height: min(720px, calc(100svh - 24px));
+
+  border: 3px solid var(--ink);
+  border-radius: 26px;
+  overflow: hidden;
+}
+
+.title-screen,
+.loading-screen,
+.finish-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.title-decoration {
+  margin-bottom: 20px;
+  font-size: clamp(42px, 6vw, 70px);
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 24px;
+  font-size: clamp(38px, 6vw, 70px);
+  letter-spacing: 0.04em;
+}
+
+.title-description {
+  font-size: clamp(18px, 2.4vw, 27px);
+}
+
+.button {
+  border: 3px solid var(--ink);
+  border-radius: 30px;
+
+  background: var(--light-yellow);
+  box-shadow: 3px 4px 0 rgb(78 66 48 / 12%);
+
+  transition: transform 0.1s;
+}
+
+.button:active,
+.small-button:active {
+  transform: translateY(2px);
+}
+
+.start-button {
+  width: min(440px, 90%);
+  min-height: 120px;
+  margin: 22px 0;
+
+  font-size: clamp(30px, 4.5vw, 48px);
+}
+
+.small-note {
+  color: var(--sub-ink);
+  font-size: 19px;
+  line-height: 1.8;
+}
+
+.keyboard-note {
+  margin-bottom: 0;
+  color: var(--sub-ink);
+  font-size: 15px;
+}
+
+.error-message {
+  max-width: 650px;
+  margin: 10px 0 20px;
+
+  color: #b32929;
+  font-size: 16px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.error-message:empty {
+  display: none;
+}
+
+.loading-screen h2 {
+  font-size: clamp(24px, 3vw, 40px);
+}
+
+.loading-screen p {
+  color: var(--sub-ink);
+  font-size: 19px;
+}
+
+.spinner {
+  width: 54px;
+  height: 54px;
+  margin-bottom: 30px;
+
+  border: 6px solid #e3d7a8;
+  border-top-color: var(--green);
+  border-radius: 50%;
+
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* プレイ画面 */
+.game-screen {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  height: 720px;
+  height: min(720px, calc(100svh - 24px));
+}
+
+.instruction-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  min-width: 0;
+  padding: 22px 28px;
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  color: var(--sub-ink);
+  font-size: clamp(16px, 2vw, 24px);
+}
+
+.small-button {
+  min-height: 44px;
+  padding: 8px 15px;
+
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  background: var(--light-yellow);
+
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.question-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  min-height: 210px;
+  padding: 20px 8px;
+
+  border: 3px solid var(--ink);
+  border-radius: 38px;
+  background: var(--card-yellow);
+
+  text-align: center;
+}
+
+.question-line {
+  font-size: clamp(34px, 4.4vw, 62px);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+ruby {
+  ruby-position: over;
+}
+
+rt {
+  font-size: 0.38em;
+  font-weight: 400;
+}
+
+.hint-area {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+
+  text-align: center;
+}
+
+.hint-line {
+  font-size: clamp(18px, 2.3vw, 30px);
+  line-height: 1.7;
+}
+
+.hold-area {
+  margin-top: auto;
+}
+
+.status-text {
+  min-height: 28px;
+  margin-bottom: 12px;
+
+  color: var(--sub-ink);
+  text-align: center;
+  font-size: clamp(16px, 1.8vw, 22px);
+}
+
+.progress-track {
+  width: 82%;
+  height: 14px;
+  margin: 0 auto;
+
+  border-radius: 999px;
+  overflow: hidden;
+
+  background: #e8deaf;
+}
+
+.progress-fill {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+
+  background: var(--green);
+  transition: width 0.08s linear;
+}
+
+.panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  color: var(--sub-ink);
+  font-size: 13px;
+}
+
+.correct-area {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--green);
+}
+
+.correct-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 230px;
+  height: 175px;
+
+  border: 6px solid var(--green);
+  border-radius: 50%;
+
+  font-size: 62px;
+  font-weight: 700;
+
+  animation: correct-pulse 1.6s ease-in-out infinite;
+}
+
+.correct-area p {
+  margin: 12px 0 0;
+  font-size: 24px;
+}
+
+@keyframes correct-pulse {
+  50% {
+    border-color: rgb(38 151 78 / 25%);
+    transform: scale(0.97);
+  }
+}
+
+.camera-wrap {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+  border-left: 3px solid var(--ink);
+  background: #292929;
+}
+
+#cameraCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.camera-label {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  color: white;
+  background: rgb(0 0 0 / 35%);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+/* 完了画面 */
+.finish-screen {
+  background: var(--finish-background);
+  color: var(--finish-ink);
+}
+
+.finish-hands {
+  margin-bottom: 28px;
+  font-size: 90px;
+}
+
+.finish-screen h2 {
+  margin-bottom: 58px;
+  font-size: clamp(34px, 5.8vw, 69px);
+}
+
+.report-button {
+  width: min(660px, 95%);
+  min-height: 110px;
+
+  margin-bottom: 22px;
+  padding: 20px;
+
+  background: #fffffc;
+  border-color: #26221e;
+
+  font-size: clamp(19px, 3.2vw, 37px);
+}
+
+/* 入力用videoはページ内に置いたまま見えなくします。 */
+.input-video {
+  position: fixed;
+  left: -10px;
+  bottom: 0;
+
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+/* 縦向きでは上下配置 */
+@media (orientation: portrait), (max-width: 650px) {
+  .game-screen {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .instruction-panel {
+    min-height: 440px;
+    padding: 18px;
+    gap: 12px;
+  }
+
+  .question-card {
+    min-height: 160px;
+  }
+
+  .question-line {
+    font-size: clamp(34px, 7vw, 52px);
+  }
+
+  .hint-line {
+    font-size: 21px;
+  }
+
+  .camera-wrap {
+    height: 60vh;
+    height: 60svh;
+
+    min-height: 320px;
+    border-left: 0;
+    border-top: 3px solid var(--ink);
+  }
+}
+
+/* 高さが小さい横向き画面 */
+@media (orientation: landscape) and (max-height: 580px) {
+  .instruction-panel {
+    padding: 12px 18px;
+    gap: 8px;
+  }
+
+  .question-card {
+    min-height: 130px;
+    padding: 8px;
+    gap: 0;
+    border-radius: 24px;
+  }
+
+  .question-line {
+    font-size: 34px;
+  }
+
+  .hint-area {
+    gap: 0;
+  }
+
+  .hint-line {
+    font-size: 18px;
+  }
+
+  .status-text {
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+
+  .panel-footer span {
+    display: none;
+  }
+
+  .correct-circle {
+    width: 170px;
+    height: 115px;
+    font-size: 42px;
+  }
+
+  .correct-area p {
+    margin-top: 5px;
+    font-size: 19px;
+  }
+}
